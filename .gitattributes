@@ -1,0 +1,4 @@
+# Keep Go sources LF on every platform. gofmt reports CRLF files as
+# unformatted, and a Windows checkout with core.autocrlf=true would otherwise
+# rewrite them, breaking the Format step of `harness verify`.
+*.go text eol=lf

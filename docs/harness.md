@@ -47,6 +47,14 @@ make hooks
 
 There are no `--skip-*` flags. If a check is not relevant, fix the change or update the harness rules in a reviewed commit. `--no-verify` is a host-level git override, not verification evidence.
 
+### Windows
+
+`make verify` passes on Windows. Three platform facts keep it that way:
+
+- GNU make comes from `winget install ezwinports.make`; `go` must be on `PATH`.
+- `.gitattributes` pins `*.go` to LF: `gofmt` reports CRLF files as unformatted, and a `core.autocrlf=true` checkout rewrites them on every checkout.
+- Tests that assert POSIX permission bits or drive the POSIX-shell fake `agy` guard those cases with `runtime.GOOS == "windows"`. The `login --via-agy` flow is exercised on Unix only; its fake is a `#!/bin/sh` script.
+
 ## Profiles
 
 | Step | fast | full | ci |
@@ -175,9 +183,12 @@ No baselines for secrets, keyring-boundary, atomic-write, or permission violatio
 | `internal/harness/doctor` | read-only readiness inspection |
 | `internal/harness/gitcheck` | commit history check and hook installation |
 | `harness/fixtures` | independent data contracts |
+| `dsh-plugin/` | DeepSeek Harness bundle; covered by its own `npm` typecheck/test/build gate, not by the Go harness |
 | `.githooks` | opt-in local guards |
 
 Production packages must not import `internal/harness`; the `architecture` lint enforces this.
+
+The [DeepSeek Harness plugin](dsh-plugin.md) is JavaScript and is outside this harness. Run its `npm` gate (`typecheck`, `test`, `build`) described in the plugin guide; the Go profiles neither lint nor package it.
 
 ## Related docs
 
