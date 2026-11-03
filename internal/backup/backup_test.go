@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 )
@@ -59,7 +60,8 @@ func TestSnapshotRetentionAndPermissions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o700 {
+	// Windows has no POSIX mode bits: chmod only toggles read-only there.
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o700 {
 		t.Errorf("backup dir permissions = %o", info.Mode().Perm())
 	}
 	for _, path := range managed {
@@ -67,7 +69,7 @@ func TestSnapshotRetentionAndPermissions(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if info.Mode().Perm() != 0o600 {
+		if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 			t.Errorf("%s permissions = %o", filepath.Base(path), info.Mode().Perm())
 		}
 	}
@@ -237,7 +239,7 @@ func TestSnapshotRehardensDirectory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o700 {
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o700 {
 		t.Errorf("backup dir permissions = %o", info.Mode().Perm())
 	}
 }

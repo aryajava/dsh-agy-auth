@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -92,7 +93,8 @@ func TestCheckForUpdateCaches(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	// Windows has no POSIX mode bits: chmod only toggles read-only there.
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Errorf("cache permissions = %o", info.Mode().Perm())
 	}
 }
@@ -139,6 +141,9 @@ func TestUpdatePromptDeclineDoesNotNag(t *testing.T) {
 		TTY:       true,
 		OutTTY:    true,
 		Command:   "list",
+	}
+	if !app.canAutoUpdate() {
+		t.Skip("automatic update is disabled on this platform")
 	}
 	app.maybeNotifyUpdate()
 	if !strings.Contains(out.String(), "Update now? [y/N]") || !strings.Contains(out.String(), "Update skipped") {
@@ -190,7 +195,7 @@ func TestInstallReleaseBinary(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o755 {
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o755 {
 		t.Errorf("target mode = %o", info.Mode().Perm())
 	}
 }

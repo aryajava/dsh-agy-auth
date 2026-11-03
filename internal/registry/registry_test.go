@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -466,7 +467,8 @@ func TestRemoveAndPermissions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	// Windows has no POSIX mode bits: chmod only toggles read-only there.
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Errorf("account permissions = %o", info.Mode().Perm())
 	}
 	reg, _ := store.Load()
@@ -533,7 +535,7 @@ func TestSaveTokenEncryptsAtRest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Errorf("snapshot permissions = %o", info.Mode().Perm())
 	}
 	if _, err := os.Stat(store.Vault.KeyPath); err != nil {

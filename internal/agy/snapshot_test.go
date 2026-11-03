@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -39,14 +40,15 @@ func TestSnapshotVaultRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	// Windows has no POSIX mode bits: chmod only toggles read-only there.
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Errorf("key permissions = %o", info.Mode().Perm())
 	}
 	keyDir, err := os.Stat(filepath.Dir(keyPath))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if keyDir.Mode().Perm() != 0o700 {
+	if runtime.GOOS != "windows" && keyDir.Mode().Perm() != 0o700 {
 		t.Errorf("key directory permissions = %o", keyDir.Mode().Perm())
 	}
 }

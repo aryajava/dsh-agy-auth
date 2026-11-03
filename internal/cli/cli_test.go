@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -167,7 +168,8 @@ func TestCLILifecycle(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	// Windows has no POSIX mode bits: chmod only toggles read-only there.
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Errorf("token permissions = %o", info.Mode().Perm())
 	}
 
@@ -1353,6 +1355,9 @@ func TestRenderAccountTableGroupsSameEmail(t *testing.T) {
 
 func TestRenderAccountTableInteractiveHighlight(t *testing.T) {
 	env := newTestEnv(t, false)
+	// Colour depends on NO_COLOR, which a developer shell may export; the test
+	// asserts the coloured path, so pin the variable instead of inheriting it.
+	t.Setenv("NO_COLOR", "")
 	app, out, _ := env.app("")
 	app.Width = 100
 	app.OutTTY = true
@@ -1966,6 +1971,9 @@ func TestLoginReusesStoredRefreshToken(t *testing.T) {
 
 func fakeAgyLogin(t *testing.T, token []byte, exitCode int) string {
 	t.Helper()
+	if runtime.GOOS == "windows" {
+		t.Skip("the fake agy is a POSIX shell script")
+	}
 	path := filepath.Join(t.TempDir(), "agy")
 	script := "#!/bin/sh\n"
 	if token != nil {
