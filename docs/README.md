@@ -6,6 +6,7 @@ Start here, then follow the topic-specific source.
 
 - [README](../README.md) — install, quick start, commands, updates
 - [User guide](user-guide.md) — storage, quota, OAuth, JSON, environment variables
+- [DeepSeek Harness plugin](dsh-plugin.md) — accounts page, Antigravity model provider, tools, installation, security, troubleshooting
 - [Development](development.md) — build, install from source, verification, packaging
 - [Contributing](../CONTRIBUTING.md) — setup, pull requests, safe credential testing
 - [Security](../SECURITY.md) — reporting, stored credentials, trust model

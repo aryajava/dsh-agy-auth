@@ -19,7 +19,9 @@
     "npm/",
     "README.md",
     "LICENSE",
-    "assets/"
+    "assets/",
+    "dsh-plugin/demo-harness.png",
+    "dsh-plugin/demo-models.png"
   ],
   "scripts": {
     "build": "go build -o bin/agy-auth ./cmd/agy-auth",

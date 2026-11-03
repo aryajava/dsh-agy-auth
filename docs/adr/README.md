@@ -25,6 +25,9 @@ Use the next number. Statuses: `Proposed`, `Accepted`, `Superseded`, `Deprecated
 |---|---|---|
 | [0001](0001-repository-harness.md) | Accepted | Adopt a repository harness with mechanical guardrails, without loop engineering |
 | [0002](0002-antigravity-desktop-support.md) | Accepted | Support Antigravity Desktop profiles alongside CLI with default dual-target switching and --relaunch |
+| [0003](0003-deepseek-harness-plugin.md) | Accepted | Ship a DeepSeek Harness plugin bundle that wraps the CLI and provides a Web GUI page |
+| [0004](0004-antigravity-model-provider.md) | Accepted | Register the installed agy CLI as the `antigravity` DSH model provider with stream-json mapping and single-account credentials |
+| [0005](0005-antigravity-provider-ux.md) | Accepted | Family-grouped quota, exact-slug efforts, file-based images, plugin activity cards, idle/update/retry hardening, and EN/ID copy |
 
 ## Template
 

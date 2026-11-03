@@ -1,0 +1,58 @@
+{
+  "name": "@aryajava/dsh-agy-auth",
+  "version": "0.1.0",
+  "description": "Antigravity account manager for DeepSeek Harness: model tools and a Web UI on top of agy-auth",
+  "license": "MIT",
+  "author": "ahmad fikril <fikrildev@gmail.com>",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/**/*.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "cordis.patch.yml",
+    "README.md",
+    "demo-harness.png",
+    "demo-models.png",
+    "demo-model-call.png",
+    "demo-activity.png"
+  ],
+  "scripts": {
+    "prepare": "node build.mjs",
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.2.0-rc.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aryajava/dsh-agy-auth.git",
+    "directory": "dsh-plugin"
+  },
+  "homepage": "https://github.com/aryajava/dsh-agy-auth/tree/main/dsh-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/aryajava/dsh-agy-auth/issues"
+  }
+}

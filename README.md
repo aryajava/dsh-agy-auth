@@ -17,6 +17,18 @@
 - Use live views with automatic switching away from exhausted groups.
 - Keep encrypted account snapshots and automatic backups.
 
+## DeepSeek Harness plugin
+
+`agy-auth` also ships as a [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin. The **Antigravity Accounts** page lives inside the Harness Web GUI: switch accounts, save the live agy account, sign in through Google OAuth, compare quota, edit aliases, remove snapshots, rotate, and inspect storage health. The same operations are available to the agent as `agy_auth_*` tools.
+
+The plugin also registers an **Antigravity model provider**: `agy models` (Gemini 4 Argon, Gemini 3.8 Flash, Claude Opus/Sonnet 5.5, GPT-OSS) appears in the normal Harness model selector. Each turn is one `agy -p --output-format stream-json` agent run; thinking, tool activity, usage, and conversation binding are mapped into DSH. The account page groups quota by model family (Gemini / Claude+GPT / Argon), the page ships English and Indonesian copy (English default), and completed turns show tool activity cards. See the [Harness plugin guide](docs/dsh-plugin.md#antigravity-model-provider) for the permission boundary (agy's tools are not gated by DSH approvals) and cost notes.
+
+![Antigravity Accounts page in DeepSeek Harness](dsh-plugin/demo-harness.png)
+
+![Antigravity models in the DeepSeek Harness model selector](dsh-plugin/demo-models.png)
+
+Install, configure, and troubleshoot from the [Harness plugin guide](docs/dsh-plugin.md); the package itself is [dsh-plugin](dsh-plugin/README.md).
+
 ## Install
 
 npm is the recommended install:

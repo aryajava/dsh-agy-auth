@@ -4,6 +4,26 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- **Antigravity model provider in the DeepSeek Harness plugin**: registers the `antigravity` LLM route, lists every model from `agy models` in the DSH selector (Gemini 4 Argon, Gemini 3.8 Flash, Claude Opus/Sonnet 5.5, GPT-OSS), and maps `agy -p --output-format stream-json` text, thinking, tool activity, token usage, and `--conversation` session binding into DSH.
+- Default `--dangerously-skip-permissions` for the model provider (agy owns its file/shell tools outside DSH approval), optional proxy, single-account operation, and opt-in `autoRotate` with a loud warning.
+- `agy_model_status` diagnostic tool and model-provider tests (57 total).
+- Capacity 503 fallback: `AGY_CAPACITY` downgrades the same Gemini family high → medium → low before failing and is excluded from the DSH retry loop, avoiding the repeated "attempt 4: UNAVAILABLE" loop.
+- Truncated-tool-output handling: the prompt instructs agy to read the spilled full-output file, and activity cards show its path.
+- Model-provider UX/reliability wave: quota grouped by Gemini / Claude+GPT / Argon; Gemini effort selector (exact agy slug), hidden models, fallback catalog, staged image inputs with `--add-dir`, DSH goal/plan context, five-minute configurable idle watchdog, Windows agy auto-update suppression, classified error retry, plan-mode auxiliary calls, and plugin-rendered tool activity cards.
+- Account page and model provider now ship English/Indonesian copy with English as the default; the `EN/ID` header toggle persists the choice.
+
+- DeepSeek Harness plugin bundle (`dsh-plugin/`, `@aryajava/dsh-agy-auth`) with a React **Antigravity Accounts** page in the Harness Web GUI: account list with plan and quota, switch, save live account, interactive OAuth sign-in, aliases, removal, quota rotation, storage cleanup, and storage health.
+- Eight `agy_auth_*` model tools over the existing CLI JSON contract.
+- Same-origin `/agy-auth/api` routes behind the Harness connection trust fence, with a cached Host service, bounded subprocess capture, and no shell.
+- Plugin tests against a fake CLI, a reproducible browser-bundle build, and the [Harness plugin guide](docs/dsh-plugin.md).
+
+### Fixed
+
+- Antigravity retry policy is now returned in its resolved shape (top-level `initialDelayMs`/`maxDelayMs`/`jitterRatio`) instead of a nested `backoff` object. The retry plugin previously computed a `NaN` delay, and its durable `llm/retry` event was rejected as non-JSON-serializable.
+- Capacity 503 errors no longer consume DSH retries before the effort fallback.
+
 ## [0.3.0] - 2026-10-25
 
 ### Added

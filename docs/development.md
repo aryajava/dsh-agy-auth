@@ -51,6 +51,19 @@ make hooks        # opt-in pre-commit and commit-msg hooks
 
 `make verify` is enough for most changes. See [docs/harness.md](harness.md) for the rules, contracts, profiles, and commit policy. For architecture, testing, and coding conventions, see [docs/engineering](engineering/README.md).
 
+## DeepSeek Harness plugin
+
+The plugin lives in [`dsh-plugin/`](../dsh-plugin/README.md). It has its own gate because the Go harness does not build or test JavaScript:
+
+```shell
+npm --prefix dsh-plugin install
+npm --prefix dsh-plugin run typecheck
+npm --prefix dsh-plugin test
+npm --prefix dsh-plugin run build
+```
+
+`dsh-plugin/lib/` is generated (and ignored by git); rebuild before installing the local checkout into a Harness profile. Tests and manual GUI checks use `dsh-plugin/test/fake-agy-auth.mjs`, which speaks the real JSON envelope. See [the plugin guide](dsh-plugin.md) for installation and configuration.
+
 ## Packaging and release
 
 `npm pack` cross-compiles all six platform binaries into `npm/vendor/`; the Node shim in `npm/bin/agy-auth.js` dispatches to the right one. The GitHub release workflow publishes the npm package using the `NPM_TOKEN` secret.
