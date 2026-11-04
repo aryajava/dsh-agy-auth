@@ -54,4 +54,69 @@ declare module '@deepseek-ai/dsh-client-ui-primitives' {
   export const IconGlobeOutlineRegular: (props: IconProps) => JSX.Element
   export const IconRightUpOutlineRegular: (props: IconProps) => JSX.Element
   export const IconEditOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconApiOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconBrowseOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconChecklistOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconChevronDownOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconCodeOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconSearchOutlineRegular: (props: IconProps) => JSX.Element
+  export const IconSparkleRegular: (props: IconProps) => JSX.Element
+
+  /** Shared 24px disclosure header used by the Host's own process and tool rows. */
+  export const DisclosureRow: (props: {
+    icon: ReactNode
+    title: string
+    open: boolean
+    expandable: boolean
+    onToggle: () => void
+    running?: boolean
+    expandOnRowClick?: boolean
+    previewChevron?: boolean
+    keepContentWhenOpen?: boolean
+    collapsedContent?: ReactNode
+    headerAccessory?: ReactNode
+    children?: ReactNode
+    className?: string
+    rowClassName?: string
+    contentClassName?: string
+    contentLayoutClassName?: string
+    leadingClassName?: string
+    chevronClassName?: string
+    titleClassName?: string
+  }) => JSX.Element
+
+  /** Display copy for the terminal surface; the owner supplies localized labels. */
+  export interface TerminalBlockLabels {
+    commandLine: (line: number) => string
+    signal: (signal: string) => string
+    exitCode: (code: number) => string
+    noExitCode: string
+    running: string
+    failed: string
+    done: string
+    copy: string
+    copied: string
+    noOutput: string
+    collapseAria: string
+    collapse: string
+    expandAria: (hidden: number) => string
+    expand: (hidden: number) => string
+  }
+
+  /** Shell command plus its recorded output, drawn as the Host's terminal card. */
+  export const TerminalBlock: (props: {
+    command: string
+    cwd?: string
+    home?: string
+    output?: string
+    exitCode?: number | null
+    signal?: string
+    running?: boolean
+    background?: boolean
+    maxLines?: number
+    copyText?: string
+    runStateDot?: boolean
+    className?: string
+    labels: TerminalBlockLabels
+  }) => JSX.Element
 }

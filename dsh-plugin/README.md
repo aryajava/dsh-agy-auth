@@ -38,7 +38,7 @@ The provider is intentionally single-account: it uses the live `agy` credential 
 ### Quota, activity, and language UI
 
 - The account page reads `agy-auth usage --all` and shows **Gemini Models**, **Claude and GPT models**, and **Gemini 4 Argon** as separate groups with their 5-hour/weekly buckets. Accounts without an Argon pool simply show the first two groups.
-- agy tool steps are recorded locally and rendered as native-style **activity cards** under the completed turn (terminal, file, and generic variants). They are not DSH tool-call blocks; agy still executes its own tools and the stream maps them to reasoning annotations as before.
+- agy tool steps are recorded locally and rendered as a collapsible **activity trail** under the completed turn: one header with the step count and span over one 24px row per step, expandable to the recorded command, path, or text. They are not DSH tool-call blocks; agy still executes its own tools and the stream maps them to reasoning annotations as before.
 - The page ships English and Indonesian copy. **English is the default**; the `EN/ID` button in the header switches and persists the choice in `localStorage`.
 - Images are staged into `model.mediaDir` and referenced by absolute path with `--add-dir`; agy reads them with its file/vision tools. DSH tools are still not forwarded.
 - The provider advertises Gemini effort as a model-level reasoning selector and runs the matching exact agy slug (for example `gemini-3.8-flash-low`), which avoids the slower base-model effort path.

@@ -189,7 +189,7 @@ export const PANEL_CSS = `
   border-radius: 8px;
   background: var(--dsw-alias-fill-l1);
   color: var(--dsw-alias-label-secondary);
-  font-family: var(--dsw-font-mono);
+  font-family: var(--ds-font-family-code);
   font-size: 12px;
 }
 
@@ -470,113 +470,223 @@ export const PANEL_CSS = `
   white-space: nowrap;
 }
 
+/*
+ * Antigravity activity trail. One quiet group per turn: a 24px header and a row
+ * per recorded step, in the same 24px disclosure language as the Host's own
+ * tool rows. No per-step card, no nested box inside the chat frame.
+ */
+
 .agy-activity {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 14px 0 4px;
+  margin: 14px 0 2px;
+  min-width: 0;
 }
 
-.agy-activity-title {
-  color: var(--dsw-alias-label-caption);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.agy-activity-card {
-  overflow: hidden;
-  border: 0.5px solid var(--dsw-alias-border-l3);
-  border-radius: 8px;
-  background: var(--dsw-alias-fill-l1);
-}
-
-.agy-activity-head {
+.agy-activity-bar {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
-  border-bottom: 0.5px solid var(--dsw-alias-border-l4);
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dsw-radius-xs);
+  background: none;
   color: var(--dsw-alias-label-tertiary);
-  font-size: 11px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 100ms ease-out;
 }
 
-.agy-activity-head code {
-  overflow: hidden;
+.agy-activity-bar > svg {
+  flex: none;
+}
+
+.agy-activity-bar-label {
+  flex: none;
   color: var(--dsw-alias-label-secondary);
-  font-family: var(--ds-font-family-code, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.agy-activity-bar-meta {
+  flex: none;
+  color: var(--dsw-alias-label-caption);
   font-size: 11px;
-  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.agy-activity-dot {
+  flex: none;
+  width: 2px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--dsw-alias-label-caption);
+}
+
+.agy-activity-bar-chevron {
+  flex: none;
+  transition: transform 120ms ease-out;
+}
+
+.agy-activity[data-open='false'] .agy-activity-bar-chevron {
+  transform: rotate(-90deg);
+}
+
+@media (hover: hover) {
+  .agy-activity-bar:hover {
+    color: var(--dsw-alias-label-secondary);
+  }
+}
+
+.agy-activity-bar:focus-visible {
+  outline: 2px solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+  outline-offset: 1px;
+}
+
+.agy-activity-list {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agy-activity-item {
+  min-width: 0;
+}
+
+.agy-activity-sep {
+  flex: none;
+  width: 2px;
+  height: 2px;
+  margin: 0 8px;
+  border-radius: 1px;
+  background: var(--dsw-alias-label-caption);
+}
+
+.agy-activity-summary,
+.agy-activity-meta {
+  line-height: 24px;
   white-space: nowrap;
 }
 
-.agy-activity-kind {
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: var(--dsw-alias-fill-l2);
-  color: var(--dsw-alias-label-secondary);
-  font-size: 10px;
+.agy-activity-summary {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
 }
 
-.agy-activity-command,
-.agy-activity-output,
-.agy-activity-error {
-  margin: 0;
-  padding: 9px 10px;
-  overflow-x: auto;
-  font-family: var(--ds-font-family-code, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 12px;
-  line-height: 18px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.agy-activity-command {
-  color: var(--dsw-alias-label-primary);
-}
-
-.agy-activity-output {
-  max-height: 260px;
-  overflow-y: auto;
-  border-top: 0.5px solid var(--dsw-alias-border-l4);
-  color: var(--dsw-alias-label-secondary);
-}
-
-.agy-activity-error {
-  border-top: 0.5px solid var(--dsw-alias-border-l4);
+.agy-activity-summary[data-tone='error'] {
   color: var(--dsw-alias-state-error-primary);
 }
 
-.agy-activity-path {
-  padding: 7px 10px 0;
-  overflow: hidden;
-  color: var(--dsw-alias-label-tertiary);
-  font-family: var(--ds-font-family-code, ui-monospace, SFMono-Regular, Menlo, monospace);
+.agy-activity-meta {
+  flex: none;
+  margin-left: 10px;
+  color: var(--dsw-alias-label-caption);
   font-size: 11px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.agy-activity-note {
+.agy-activity-exit {
+  flex: none;
+  margin-left: 8px;
+  gap: 5px;
+}
+
+.agy-activity-exit-dot {
+  flex: none;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--dsw-alias-state-error-primary);
+}
+
+.agy-activity-body {
+  margin: 4px 0 6px 4px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.agy-activity-body .agy-activity-terminal {
   margin: 0;
-  padding: 7px 10px 9px;
-  border-top: 0.5px solid var(--dsw-alias-border-l4);
-  color: var(--dsw-alias-state-warn-label);
-  font-size: 11px;
-  line-height: 17px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  --dsl-terminal-font: var(--dsw-font-markdown-code-block-small);
+  --dsl-terminal-line-height: 18px;
+  --dsl-terminal-output-max-height: 240px;
+  --dsl-terminal-command-whitespace: pre-wrap;
+}
+
+.agy-activity-file {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.agy-activity-file-path {
+  color: var(--dsw-alias-label-secondary);
+  font-family: var(--ds-font-family-code);
+  font-size: 12px;
+  line-height: 18px;
   overflow-wrap: anywhere;
 }
 
-.agy-activity-note code {
-  font-family: var(--ds-font-family-code, ui-monospace, SFMono-Regular, Menlo, monospace);
+.agy-activity-file-measure {
+  color: var(--dsw-alias-label-caption);
+  font-size: 11px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
 }
 
-.agy-activity-empty {
-  margin: 0;
-  padding: 7px 10px 9px;
+.agy-activity-panel {
+  max-height: 280px;
+  overflow: auto;
+  padding: 10px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  border-radius: var(--dsw-radius-lg);
+  background: var(--dsw-alias-markdown-code-block);
+}
+
+.agy-activity-panel::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--dsw-radius-sm);
+}
+
+.agy-activity-label {
+  margin-bottom: 6px;
   color: var(--dsw-alias-label-caption);
+  font-family: var(--ds-font-family-code);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.agy-activity-text {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.agy-activity-text[data-tone='error'] {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.agy-activity-notice {
+  margin: 6px 0 0;
+  color: var(--dsw-alias-state-warn-label);
   font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.agy-activity-notice code {
+  font-family: var(--ds-font-family-code);
+  font-size: 11px;
 }
 
 .agy-usage-error {
@@ -668,7 +778,7 @@ export const PANEL_CSS = `
 }
 
 .agy-mono {
-  font-family: var(--dsw-font-mono);
+  font-family: var(--ds-font-family-code);
   font-size: 11px;
 }
 
@@ -774,7 +884,7 @@ export const PANEL_CSS = `
 }
 
 .agy-code-input input {
-  font-family: var(--dsw-font-mono);
+  font-family: var(--ds-font-family-code);
   font-size: 12px;
 }
 
@@ -820,7 +930,7 @@ export const PANEL_CSS = `
 
 .agy-clean-list code {
   overflow: hidden;
-  font-family: var(--dsw-font-mono);
+  font-family: var(--ds-font-family-code);
   font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -885,6 +995,10 @@ export const PANEL_CSS = `
 
 @media (prefers-reduced-motion: reduce) {
   .agy-bar-fill {
+    transition: none;
+  }
+
+  .agy-activity-bar-chevron {
     transition: none;
   }
 }
